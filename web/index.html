@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ROV pilot station</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="stage">
+    <img id="video" src="/video" alt="Live camera view">
+    <p id="caption" class="caption">Front camera</p>
+    <div id="toast" class="toast" role="status" hidden></div>
+  </main>
+
+  <aside class="side">
+    <section aria-label="Mission timer">
+      <div id="clock" class="clock">
+        <div id="time" class="time" role="timer">15:00</div>
+        <div id="status" class="status">Ready</div>
+        <div class="bar"><div id="bar-fill"></div></div>
+      </div>
+      <div class="row">
+        <button id="btn-start" class="primary">Start</button>
+        <button id="btn-reset">Reset</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Connections</h2>
+      <ul id="conn" class="conn"></ul>
+    </section>
+
+    <section>
+      <h2>View</h2>
+      <div id="layout" class="seg" role="group" aria-label="Layout">
+        <button id="btn-single" type="button">Single</button>
+        <button id="btn-dual" type="button">Side by side</button>
+      </div>
+      <div id="cams" class="seg" role="group" aria-label="Camera"></div>
+
+      <button id="filter" type="button" class="toggle" role="switch" aria-checked="false">
+        <span>Blue filter</span><span class="knob" aria-hidden="true"></span>
+        <span id="filter-state" class="sr-state">OFF</span>
+      </button>
+
+      <button id="btn-snap" type="button" class="snap">Save frame (JPEG)</button>
+      <p class="hint">Keys: C camera, V layout, F filter, S save frame.</p>
+    </section>
+
+    <section>
+      <h2>Attitude</h2>
+      <div class="attitude">
+        <svg id="horizon" viewBox="-60 -60 120 120" role="img" aria-label="Attitude indicator">
+          <defs><clipPath id="ring"><circle r="56"/></clipPath></defs>
+          <g clip-path="url(#ring)">
+            <g id="hz">
+              <rect class="hz-up"   x="-200" y="-200" width="400" height="200"/>
+              <rect class="hz-down" x="-200" y="0"    width="400" height="200"/>
+              <line class="hz-line" x1="-200" y1="0" x2="200" y2="0"/>
+            </g>
+          </g>
+          <circle class="hz-ring" r="56"/>
+          <path class="hz-mark" d="M-26 0 H-9 M9 0 H26"/>
+        </svg>
+        <dl>
+          <div><dt>Roll</dt><dd id="roll">0.0°</dd></div>
+          <div><dt>Pitch</dt><dd id="pitch">0.0°</dd></div>
+          <div><dt>Yaw</dt><dd id="yaw">0.0°</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <p id="link" class="link">ROV link lost</p>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>

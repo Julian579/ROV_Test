@@ -1,0 +1,140 @@
+:root {
+  --lichen: #DCE1D5;   /* page */
+  --kelp:   #1B2620;   /* video well, clock, text */
+  --moss:   #4F5D51;   /* secondary text, outlines */
+  --buoy:   #E0A82E;   /* primary action, warning clock */
+  --brick:  #9A3A28;   /* last 30 seconds, link lost */
+    --ok:     #2F7A4B;   /* connected */
+  --font: "Bahnschrift", "DIN Alternate", "Ubuntu Condensed", "Roboto Condensed",
+          "Arial Narrow", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+
+body {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  background: var(--lichen);
+  color: var(--kelp);
+  font: 16px/1.4 var(--font);
+}
+
+/* ---- video ---- */
+.stage {
+  position: relative;
+  min-height: 0;
+  margin: 16px 0 16px 16px;
+  background: var(--kelp);
+  border-radius: 6px;
+  overflow: hidden;
+}
+#video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.caption {
+  position: absolute; left: 12px; bottom: 12px; margin: 0;
+  padding: 2px 10px;
+  background: rgba(27, 38, 32, .75); color: var(--lichen);
+  border-radius: 3px; font-size: 14px;
+}
+
+/* ---- side column ---- */
+.side { padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 22px; }
+h2 { margin: 0 0 8px; font-size: 15px; font-weight: 600; color: var(--moss); }
+
+/* ---- the clock: the one loud element ---- */
+.clock { background: var(--kelp); color: var(--lichen); border-radius: 6px; overflow: hidden; }
+.clock.warn { background: var(--buoy); color: var(--kelp); }
+.clock.last { background: var(--brick); color: var(--lichen); }
+.time {
+  padding: 20px 0 4px; text-align: center;
+  font-size: clamp(4.5rem, 8vw, 6.25rem); font-weight: 500; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.status { padding-bottom: 16px; text-align: center; font-size: 15px; }
+.bar { position: relative; height: 6px; }
+.bar::before { content: ""; position: absolute; inset: 0; background: currentColor; opacity: .25; }
+#bar-fill { position: relative; height: 100%; width: 100%; background: currentColor; }
+
+.row { display: flex; gap: 8px; margin-top: 10px; }
+.row button { flex: 1; }
+
+/* ---- controls ---- */
+button {
+  font: inherit; font-weight: 600; color: var(--kelp);
+  padding: 10px 14px; border-radius: 3px;
+  background: transparent; border: 2px solid var(--moss); cursor: pointer;
+}
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.primary { background: var(--buoy); border-color: var(--buoy); }
+:focus-visible { outline: 3px solid var(--kelp); outline-offset: 2px; }
+
+.seg { display: flex; gap: 8px; margin-bottom: 12px; }
+.seg button { flex: 1; }
+.seg button[aria-pressed="true"] { background: var(--kelp); border-color: var(--kelp); color: var(--lichen); }
+
+.check { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.check input { width: 18px; height: 18px; accent-color: var(--kelp); }
+.hint { margin: 8px 0 0; font-size: 14px; color: var(--moss); }
+
+/* ---- attitude ---- */
+.attitude { display: flex; align-items: center; gap: 16px; }
+#horizon { width: 112px; height: 112px; flex: none; }
+.hz-up   { fill: #A9B8A0; }
+.hz-down { fill: var(--kelp); }
+.hz-line { stroke: var(--buoy); stroke-width: 2; }
+.hz-ring { fill: none; stroke: var(--kelp); stroke-width: 3; }
+.hz-mark { fill: none; stroke: var(--brick); stroke-width: 3; stroke-linecap: round; }
+dl { margin: 0; flex: 1; }
+dl div { display: flex; justify-content: space-between; padding: 3px 0; }
+dt { color: var(--moss); }
+dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.link { margin: auto 0 0; font-size: 14px; color: var(--moss); }
+.link.bad { color: var(--brick); font-weight: 600; }
+
+/* ---- narrow screens: stack ---- */
+@media (max-width: 900px) {
+  body { grid-template-columns: 1fr; height: auto; }
+  .stage { margin: 12px; aspect-ratio: 4 / 3; }
+}
+/* ---- connection icons ---- */
+.conn { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; }
+.conn li {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 8px 4px; border: 2px solid currentColor; border-radius: 4px;
+  font-size: 13px; font-weight: 600; color: var(--brick);
+}
+.conn li.ok { color: var(--ok); }
+.conn svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 2;
+            stroke-linecap: round; stroke-linejoin: round; }
+.conn .lbl { color: var(--kelp); }
+.conn .st  { font-size: 12px; }
+
+/* ---- filter switch ---- */
+.toggle {
+  display: flex; align-items: center; width: 100%; gap: 10px; margin-bottom: 10px;
+}
+.toggle > span:first-child { flex: 1; text-align: left; }
+.toggle .knob {
+  position: relative; width: 40px; height: 22px; border-radius: 11px;
+  background: var(--moss); transition: background .15s;
+}
+.toggle .knob::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px;
+  border-radius: 50%; background: var(--lichen); transition: transform .15s;
+}
+.toggle[aria-checked="true"] .knob { background: var(--ok); }
+.toggle[aria-checked="true"] .knob::after { transform: translateX(18px); }
+.sr-state { min-width: 28px; font-size: 13px; color: var(--moss); }
+
+.snap { width: 100%; }
+
+.seg button:disabled { opacity: .45; }
+
+/* ---- toast ---- */
+.toast {
+  position: absolute; right: 12px; top: 12px; padding: 6px 12px; border-radius: 3px;
+  background: var(--kelp); color: var(--lichen); font-size: 14px;
+  border: 2px solid var(--buoy);
+}
+.toast.err { border-color: var(--brick); }
